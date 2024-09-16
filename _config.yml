@@ -1,8 +1,7 @@
-title: Just the Docs Template
-description: A starter template for a Jeykll site using the Just the Docs theme!
+title: Taller de Videojocs
+description: Material de suport per l'assignatura Taller de Videojocs
 theme: just-the-docs
 
-url: https://just-the-docs.github.io
+url: https://lawer.github.io/videojocs/
 
-aux_links:
-  Template Repository: https://github.com/just-the-docs/just-the-docs-template
+last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter

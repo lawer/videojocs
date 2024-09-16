@@ -18,8 +18,8 @@ En aquesta secciò practicarem el pensament computacional amb activitats que no 
 
 ## Sessions
 
-1.- [Pensament computacional I: Introducció](pensament_computacional_1.pdf)
-2.- [Pensament computacional II: Parts](pensament_computacional_2.md)
-3.- [Pensament computacional III: Procediment](pensament_computacional_3.md)
-4.- [Pensament computacional IV: Introducció a la programació](pensament_computacional_4.md)
-5.- [Pensament computacional V: Algorismes del dia a dia](pensament_computacional_5.md)
+1. [Pensament computacional I: Introducció](pensament_computacional_1.pdf)
+2. [Pensament computacional II: Parts](pensament_computacional_2.md)
+3. [Pensament computacional III: Procediment](pensament_computacional_3.md)
+4. [Pensament computacional IV: Introducció a la programació](pensament_computacional_4.md)
+5. [Pensament computacional V: Algorismes del dia a dia](pensament_computacional_5.md)

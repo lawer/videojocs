@@ -5,7 +5,6 @@ has_children: true
 has_toc: false
 ---
 
-
 # Pensament computacional
 
 Abans de començar a programar, és important tenir clar què és el pensament computacional. Aquest és un conjunt de capacitats que ens permeten resoldre problemes de manera eficient i efectiva. Aquestes capacitats són:

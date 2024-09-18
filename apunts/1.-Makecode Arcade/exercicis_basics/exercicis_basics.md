@@ -3,6 +3,7 @@ title: 1.1 Exercicis bàsics
 layout: default 
 parent: 1. Makecode Arcade
 nav_order: 1
+has_children: false
 toc: false
 ---
 

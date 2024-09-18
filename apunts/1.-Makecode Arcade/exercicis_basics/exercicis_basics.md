@@ -1,6 +1,11 @@
-# Makecode Arcade
+---
+title: 1.1 Exercicis bàsics
+layout: default 
+parent: 1. Makecode Arcade
+nav_order: 1
+---
 
-## Exercicis bàsics
+# Exercicis bàsics
 
 Aquesta secció serveix com a introducció ràpida a l'entorn Arcade, i als conceptes bàsics de la programació amb blocs.
 

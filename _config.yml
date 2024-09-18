@@ -7,6 +7,7 @@ url: https://lawer.github.io/videojocs/
 last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter
 
 callouts:
+  callouts_level: loud
   warning:
     title: important-title
     color: blue

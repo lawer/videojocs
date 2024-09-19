@@ -4,7 +4,6 @@ layout: default
 parent: 1. Makecode Arcade
 nav_order: 1
 has_children: true
-toc: false
 nav_order: 1
 ---
 

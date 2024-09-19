@@ -1,5 +1,6 @@
 ---
 title: Índex
+has_children: true
 layout: home
 nav_order: 1
 ---

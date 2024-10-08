@@ -1,5 +1,5 @@
 ---
-title: 1.2.1 Introducció als bucles
+title: 1.1.2 Introducció als bucles
 layout: default 
 parent: 1.2 Bucles
 nav_order: 1
@@ -11,12 +11,12 @@ Quan escrivim codi, sovint volem repetir la mateixa acció. Utilitzant bucles, p
 
 Un exemple de visualització d'un bucle és mirar la multiplicació d'enters com una addició repetida. L'addició repetida de l'enter 4 afegida cinc vegades:
 
-4 + 4 + 4 + 4 + 4 és igual a 4*5
+    4 + 4 + 4 + 4 + 4 és igual a 4*5
 
 
 Hem reduït la redundància en l'expressió
 
-4 + 4 + 4 + 4 + 4
+    4 + 4 + 4 + 4 + 4
 
 utilitzant un operador diferent (multiplicació: *) per expressar la mateixa expressió global.
 

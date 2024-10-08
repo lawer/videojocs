@@ -71,7 +71,7 @@ Además, cuenta con varios ciclos formativos:
   - Por contra, en el ciclo de hostelería y turismo, aunque la presencia femenina es mayoritaria, no nos preocupa tanto ya que el número de alumnos que acceden viene determinado por su diversidad funcional y no por su género.
   - En un entorno donde la participación femenina es significativamente baja, enfrentamos el desafío de superar barreras culturales, sociales y educativas que históricamente han desalentado a las mujeres a ingresar y permanecer en programas de estudio de formación profesional. Nuestra organización se enfrenta al reto de crear un entorno inclusivo y motivador que inspire a las chicas a explorar y desarrollar su interés por los estudios profesionalizadores, abriendo oportunidades para su éxito académico y profesional en un sector crucial para el futuro de la sociedad.
   - También se ha observado que la formación profesional no está preparando suficientemente a los estudiantes para el mercado laboral actual, que requiere competencias lingüísticas y digitales para ayudar a la digitalización e internacionalización de los sectores productivos de la comarca. Al mismo tiempo la economía verde y la sostenibilidad son sectores en auge en la comarca y se necesita formar a los estudiantes en valores de respeto al medio ambiente y sostenibilidad.
-  - Finalmente, la participación en la vida democrática y la ciudadanía activa es muy baja entre los estudiantes de formación profesional. Queremos fomentar la participación de los estudiantes en la vida democrática y la ciudadanía activa para formar ciudadanos críticos y comprometidos con la sociedad.
+  - Finalmente, la participación en la vida democrática y la ciudadanía activa es muy baja entre los estudiantes de formación profesional. Queremos fomentar la participación de los estudiantes en la vida democrática y la ciudadanía activa para formar ciudadanos críticos y comprometidos con la sociedad; partiendo de la colaboración con otras entidades de la UE y promoviendo la internacionalización de la educación y la formación profesional.
 
 ### Objective I
 
@@ -81,14 +81,15 @@ Promover la participación de las mujeres en los ciclos formativos de informáti
 
 #### Explanation:
 
-Incrementar la participación de mujeres en ciclos formativos de informática y agraria, reduciendo la brecha de género en este campo educativo y fomentando la diversidad en el sector tecnológico y estudios fuertemente masculinizados. Al mismo tiempo se pretende sensibilizar a la comunidad educativa sobre la importancia de la inclusión de mujeres en las áreas STEM (Ciencia, Tecnología, Ingeniería y
-Matemáticas) y en los sectores agrícolas y relacionados, mediante actividades de sensibilización, charlas y talleres que destaquen el papel de las mujeres en la informática y la tecnología y en la agricultura y la sostenibilidad.
+En nuestro centro educativo, la presencia femenina en los ciclos formativos de informática y agraria es muy baja (tan solo 10 alumnas de un total de 110 estudiantes en estos ciclos - menos de un 10%) lo que refleja una tendencia generalizada en el ámbito de la formación profesional. Esta situación se debe a diversos factores, como los estereotipos de género, la falta de modelos femeninos en estos campos y la falta de concienciación sobre la importancia de la inclusión de mujeres en las áreas STEM y en los sectores agrícolas y relacionados. 
+
+Es por ello que queremos incrementar la participación de mujeres en ciclos formativos de informática y agraria, reduciendo la brecha de género en este campo educativo y fomentando la diversidad en el sector tecnológico y estudios fuertemente masculinizados. Al mismo tiempo se pretende sensibilizar a la comunidad educativa sobre la importancia de la inclusión de mujeres en las áreas STEM (Ciencia, Tecnología, Ingeniería y Matemáticas) y en los sectores agrícolas y relacionados, mediante actividades de sensibilización, charlas y talleres que destaquen el papel de las mujeres en la informática y la tecnología y en la agricultura y la sostenibilidad.
 
 #### Measuring success:
 
 - Midiendo el incremento en matriculas femeninas en estudios STEM y de la familia  agrícola evaluaremos una de las partes principales del proyecto.
   
-El otro punto importante está relacionada con la sensibilización en estos temas. Como indicadores de este punto utilizaremos encuestas periódicas de conocimiento y sensibilización sobre el trabajo de las mujeres en la ciencia y la tecnología, el número de charlas y talleres realizados por ex alumnas y profesionales a alumnado potencial y la satisfacción de los asistentes sobre estas charlas.
+- El otro punto importante está relacionada con la sensibilización en estos temas. Como indicadores de este punto utilizaremos encuestas periódicas de conocimiento y sensibilización sobre el trabajo de las mujeres en la ciencia y la tecnología, el número de charlas y talleres realizados por ex alumnas y profesionales a alumnado potencial y la satisfacción de los asistentes sobre estas charlas.
 
 
 ### Objective II
@@ -99,8 +100,7 @@ Mejorar las competencias digitales y lingüísticas de los estudiantes, docentes
 
 #### Explanation:
 
-Desarrollar la competencia lingüística y digital de los alumnos de ciclos formativos y personal docente y no docente, mediante actividades y proyectos colaborativos europeos que fomenten el dominio del lenguaje específico de cada disciplina y el uso eficiente de herramientas digitales, preparándolos para enfrentar con éxito los desafíos académicos y laborales en un
-entorno globalizado y tecnológicamente avanzado.
+Desarrollar la competencia lingüística y digital de los alumnos de ciclos formativos y personal docente y no docente, mediante actividades y proyectos colaborativos europeos que fomenten el dominio del lenguaje específico de cada disciplina y el uso eficiente de herramientas digitales, creando personas cualificadas para enfrentar con éxito los desafíos académicos y laborales en un entorno globalizado y tecnológicamente avanzado.
 
 Observar cómo se lleva a cabo la formación tecnológica en centros de trabajo en otras ciudades europeas, permitiendo a los alumnos y personal docente y no docente que apliquen sus habilidades lingüísticas y digitales en situaciones reales. Esto podría incluir la comunicación con colegas y clientes en un entorno laboral multilingüe, así como el uso de tecnología en el desempeño de tareas laborales específicas.
 
@@ -108,14 +108,14 @@ Observar cómo se lleva a cabo la formación tecnológica en centros de trabajo 
 
 Se utilizarán los indicadores siguientes para medir el éxito alcanzado:
 
-- Indicador 1: Autoevaluación y evaluación entre pares:
+- **Indicador 1**: Autoevaluación y evaluación entre pares:
   - Se podrían implementar actividades de autoevaluación y evaluación entre pares, donde los diferentes grupos (alumnos y personal docente y no docente) reflexionen sobre su propio progreso en términos de competencia lingüística y digital, y proporcionen retroalimentación constructiva entre ellos.
 
-- Indicador 2: Evaluación de proyectos colaborativos:
+- **Indicador 2**: Evaluación de proyectos colaborativos:
   - Se podrían asignar proyectos colaborativos que requieran el uso de habilidades lingüísticas y digitales, y evaluar el desempeño de los participantes en la realización de estos proyectos.
   - Esto podría incluir la capacidad de comunicarse efectivamente en un entorno de equipo, así como el uso creativo de herramientas digitales para lograr los objetivos del proyecto.
 
-- Indicador 3: Autoevaluación personal docente y no docente:
+- **Indicador 3**: Autoevaluación personal docente y no docente:
   - Creación de formularios de recogida de datos que requieran el uso de habilidades lingüísticas y digitales, facilitando la interacción con el alumnado extranjero.
 
 
@@ -157,7 +157,7 @@ Promover la participación de los estudiantes en la vida democrática y la ciuda
 
 ### What topics are you going to work on in your project?
 
-Achieving  gender equality in STEM education and agricultural studies.
+Achieving gender equality in STEM education and agricultural studies.
 
 Promoting digital and linguistic competences, environmental education, active citizenship, democratic participation and sustainability in vocational training.
 

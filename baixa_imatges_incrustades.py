@@ -10,13 +10,11 @@ def listar_markdowns(directorio):
     return markdown_files
 
 def download_images_and_substitute(fichero):
-    print(fichero)
 
     with open(fichero, 'r') as file:
         lines = file.readlines()
     for i, line in enumerate(lines):
         if line.startswith('!['):
-            print(line)
             url = line.split('(')[1].split(')')[0]
             if url.startswith('http'):
                 # Baixem la imatge amb requests
@@ -24,13 +22,13 @@ def download_images_and_substitute(fichero):
                 response = requests.get(url)
                 
                 # Guardem la imatge en un directori local
-                with open(f'apunts/images/{url.split("/")[-1]}', 'wb') as file:
+                filename = f'downloaded_{url.split("/")[-1]}'
+                with open(f'apunts/images/{filename}', 'wb') as file:
                     file.write(response.content)
                 
                 
                 # Modifiquem la línia perquè apunti a la imatge local
-                new_url = f'../../images/{url.split("/")[-1]}'
-                print(new_url)
+                new_url = f'../../images/{filename}'
                 lines[i] = line.replace(url, new_url)
 
     with open(fichero, 'w') as file:

@@ -30,7 +30,7 @@ def download_images_and_substitute(fichero):
                     file.write(response.content)
 
                 # Modifiquem la línia perquè apunti a la imatge local
-                new_url = f"../../images/{filename}"
+                new_url = f"../../images/{filename_fixed}"
                 lines[i] = line.replace(url, new_url)
 
     with open(fichero, "w") as file:

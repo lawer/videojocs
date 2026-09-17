@@ -1,0 +1,24 @@
+<script>
+  (function() {
+    var savedTheme = localStorage.getItem('jtd-theme');
+    var theme = 'default';
+    if (savedTheme) {
+      theme = savedTheme;
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    }
+
+    document.documentElement.setAttribute('data-theme', theme);
+
+    if (theme === 'dark') {
+      var links = document.querySelectorAll('link[rel="stylesheet"]');
+      for (var i = 0; i < links.length; i++) {
+        var href = links[i].getAttribute('href');
+        if (href && href.indexOf('just-the-docs-') !== -1 && href.indexOf('head-nav') === -1) {
+          links[i].setAttribute('href', '{{ "/assets/css/just-the-docs-dark.css" | relative_url }}');
+          break;
+        }
+      }
+    }
+  })();
+</script>

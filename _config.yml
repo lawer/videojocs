@@ -4,7 +4,21 @@ theme: just-the-docs
 
 url: https://lawer.github.io/videojocs/
 
+author: Carles Gonzàlez
+lang: ca
+
 search_enabled: true
+
+enable_copy_code_button: true
+heading_anchors: true
+
+back_to_top: true
+back_to_top_text: "Torna a dalt"
+
+aux_links:
+  "GitHub":
+    - "https://github.com/lawer/videojocs"
+aux_links_new_tab: true
 
 last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter
 
@@ -27,3 +41,7 @@ callouts:
   warning:
     title: Warning
     color: red
+
+exclude:
+  - "baixa_imatges_incrustades.py"
+  - "scripts"

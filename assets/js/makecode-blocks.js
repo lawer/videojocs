@@ -95,26 +95,28 @@
           return;
         }
 
-        // Identify which slice contains the green 'al iniciar' block
+        // Identify which slice contains the green 'al iniciar' container block
+        // The container header is specifically located in the top rows of its slice (first ~80px)
         var startSliceIdx = -1;
         for (var i = 0; i < slices.length; i++) {
           var s = slices[i];
-          var hasGreen = false;
-          for (var sy = s.y1; sy <= s.y2 && !hasGreen; sy++) {
+          var headerGreenCount = 0;
+          var headerMaxY = Math.min(s.y2, s.y1 + 80);
+          var headerMaxX = Math.min(w, 600);
+          for (var sy = s.y1; sy <= headerMaxY; sy++) {
             var offset = sy * w * 4;
-            for (var sx = 0; sx < w; sx++) {
+            for (var sx = 0; sx < headerMaxX; sx++) {
               var r = data[offset + sx * 4];
               var g = data[offset + sx * 4 + 1];
               var b = data[offset + sx * 4 + 2];
               var a = data[offset + sx * 4 + 3];
               // MakeCode green is around RGB(0..50, 140..220, 0..100)
               if (a > 200 && r < 50 && g > 140 && b < 100) {
-                hasGreen = true;
-                break;
+                headerGreenCount++;
               }
             }
           }
-          if (hasGreen) {
+          if (headerGreenCount > 500) {
             startSliceIdx = i;
             break;
           }

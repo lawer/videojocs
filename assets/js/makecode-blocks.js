@@ -25,19 +25,32 @@
     if (!pre.id) {
       pre.id = "makecode-block-" + idx + "-" + Math.random().toString(36).substring(2, 8);
     }
+    var rawCode = pre.innerText || pre.textContent;
+    var isSnippet = false;
+    if (
+      (pre.className && pre.className.indexOf("snippet") !== -1) ||
+      (pre.parentElement && pre.parentElement.className && pre.parentElement.className.indexOf("snippet") !== -1) ||
+      /\/\/\s*(snippet|standalone|nostart|no-start)/i.test(rawCode)
+    ) {
+      isSnippet = true;
+      rawCode = rawCode.replace(/\/\/\s*(snippet|standalone|nostart|no-start)[^\r\n]*/gi, "").trim();
+    }
+
+    var payload = {
+      type: "renderblocks",
+      id: pre.id,
+      code: rawCode,
+    };
+    if (isSnippet) {
+      payload.options = { snippetMode: true };
+    }
+
     var f = document.getElementById("makecoderenderer");
     if (!iframeReady) {
       pendingPres.push(pre);
       injectRenderer();
     } else {
-      f.contentWindow.postMessage(
-        {
-          type: "renderblocks",
-          id: pre.id,
-          code: pre.innerText || pre.textContent,
-        },
-        targetUrl
-      );
+      f.contentWindow.postMessage(payload, targetUrl);
     }
   }
 

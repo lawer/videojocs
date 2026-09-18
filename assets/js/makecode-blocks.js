@@ -1,12 +1,146 @@
 /**
  * Renderitzador natiu de blocs MakeCode Arcade per a Jekyll i Just the Docs.
- * Converteix blocs de codi ```blocks ... ``` en SVG / PNG de blocs oficials.
- * Assegura que el bloc 'al iniciar' se situï a dalt de tot.
+ *
+ * Estratègia d'alt rendiment:
+ * 1. Comprova si el bloc ja està pre-renderitzat a 'assets/images/blocks/<hash>.png'
+ *    i el carrega a l'instant (0 ms) sense tocar els servidors de MakeCode.
+ * 2. Si la imatge estàtica no existeix (p. ex. codi nou sense pre-renderitzar),
+ *    activa automàticament l'iframe oficial de MakeCode com a fallback dinàmic.
  */
 (function () {
   var targetUrl = "https://arcade.makecode.com/";
   var pendingPres = [];
   var iframeReady = false;
+
+  // Determinar la URL base del lloc dinàmicament
+  var scriptEl =
+    document.currentScript ||
+    document.querySelector('script[src*="makecode-blocks.js"]');
+  var baseUrl = "";
+  if (scriptEl && scriptEl.src) {
+    var src = scriptEl.src;
+    var idx = src.indexOf("/assets/js/makecode-blocks.js");
+    if (idx !== -1) {
+      baseUrl = src.substring(0, idx);
+    }
+  }
+
+  // Càlcul ràpid i autònom de SHA-256 en pur JavaScript
+  function sha256(ascii) {
+    function rightRotate(value, amount) {
+      return (value >>> amount) | (value << (32 - amount));
+    }
+    var mathPow = Math.pow;
+    var maxWord = mathPow(2, 32);
+    var lengthProperty = "length";
+    var i, j;
+    var result = "";
+    var words = [];
+    var asciiBitLength = ascii[lengthProperty] * 8;
+    var hash = [];
+    var k = [];
+    var primeCounter = 0;
+    var isComposite = {};
+    for (var candidate = 2; primeCounter < 64; candidate++) {
+      if (!isComposite[candidate]) {
+        for (i = 0; i < 313; i += candidate) {
+          isComposite[i] = candidate;
+        }
+        hash[primeCounter] = (mathPow(candidate, 0.5) * maxWord) | 0;
+        k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+      }
+    }
+    ascii += "\x80";
+    while ((ascii[lengthProperty] % 64) - 56) ascii += "\x00";
+    for (i = 0; i < ascii[lengthProperty]; i++) {
+      j = ascii.charCodeAt(i);
+      if (j >> 8) return;
+      words[i >> 2] |= j << ((3 - i) % 4) * 8;
+    }
+    words[words[lengthProperty]] = (asciiBitLength / maxWord) | 0;
+    words[words[lengthProperty]] = asciiBitLength;
+    for (j = 0; j < words[lengthProperty]; ) {
+      var w = words.slice(j, (j += 16));
+      var oldHash = hash;
+      hash = hash.slice(0, 8);
+      for (i = 0; i < 64; i++) {
+        var i2 = i + j;
+        var w15 = w[i - 15],
+          w2 = w[i - 2];
+        var a = hash[0],
+          e = hash[4];
+        var temp1 =
+          hash[7] +
+          (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) +
+          ((e & hash[5]) ^ (~e & hash[6])) +
+          k[i] +
+          (w[i] =
+            i < 16
+              ? w[i]
+              : (w[i - 16] +
+                  (rightRotate(w15, 7) ^
+                    rightRotate(w15, 18) ^
+                    (w15 >>> 3)) +
+                  w[i - 7] +
+                  (rightRotate(w2, 17) ^
+                    rightRotate(w2, 19) ^
+                    (w2 >>> 10))) |
+                0);
+        var temp2 =
+          (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) +
+          ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+        hash = [(temp1 + temp2) | 0].concat(hash);
+        hash[4] = (hash[4] + temp1) | 0;
+      }
+      for (i = 0; i < 8; i++) {
+        hash[i] = (hash[i] + oldHash[i]) | 0;
+      }
+    }
+    for (i = 0; i < 8; i++) {
+      for (i2 = 3; i2 >= 0; i2--) {
+        var c = (hash[i] >> (i2 * 8)) & 255;
+        result += (c < 16 ? "0" : "") + c.toString(16);
+      }
+    }
+    return result;
+  }
+
+  function utf8Encode(str) {
+    return unescape(encodeURIComponent(str));
+  }
+
+  function normalizeCode(rawCode) {
+    var isSnippet = false;
+    if (
+      /\/\/\s*(snippet|standalone|nostart|no-start)/i.test(rawCode)
+    ) {
+      isSnippet = true;
+      rawCode = rawCode
+        .replace(/\/\/\s*(snippet|standalone|nostart|no-start)[^\r\n]*/gi, "")
+        .trim();
+    }
+
+    var lines = rawCode
+      .replace(/\r\n/g, "\n")
+      .replace(/\r/g, "\n")
+      .split("\n")
+      .map(function (l) {
+        return l.trimEnd();
+      });
+
+    while (lines.length && lines[0] === "") lines.shift();
+    while (lines.length && lines[lines.length - 1] === "") lines.pop();
+
+    var normalized = lines.join("\n");
+    var prefix = isSnippet ? "snippet:" : "full:";
+    var hash = sha256(utf8Encode(prefix + normalized)).substring(0, 16);
+
+    return {
+      hash: hash,
+      isSnippet: isSnippet,
+      code: normalized,
+    };
+  }
 
   function injectRenderer() {
     if (document.getElementById("makecoderenderer")) return;
@@ -21,33 +155,23 @@
     document.body.appendChild(f);
   }
 
-  function renderPre(pre, idx) {
+  function renderPreDynamic(pre, idx, norm) {
     if (!pre.id) {
-      pre.id = "makecode-block-" + idx + "-" + Math.random().toString(36).substring(2, 8);
+      pre.id =
+        "makecode-block-" + idx + "-" + Math.random().toString(36).substring(2, 8);
     }
-    var rawCode = pre.innerText || pre.textContent;
-    var isSnippet = false;
-    if (
-      (pre.className && pre.className.indexOf("snippet") !== -1) ||
-      (pre.parentElement && pre.parentElement.className && pre.parentElement.className.indexOf("snippet") !== -1) ||
-      /\/\/\s*(snippet|standalone|nostart|no-start)/i.test(rawCode)
-    ) {
-      isSnippet = true;
-      rawCode = rawCode.replace(/\/\/\s*(snippet|standalone|nostart|no-start)[^\r\n]*/gi, "").trim();
-    }
-
     var payload = {
       type: "renderblocks",
       id: pre.id,
-      code: rawCode,
+      code: norm.code,
     };
-    if (isSnippet) {
+    if (norm.isSnippet) {
       payload.options = { snippetMode: true };
     }
 
     var f = document.getElementById("makecoderenderer");
     if (!iframeReady) {
-      pendingPres.push(pre);
+      pendingPres.push({ pre: pre, payload: payload });
       injectRenderer();
     } else {
       f.contentWindow.postMessage(payload, targetUrl);
@@ -55,7 +179,10 @@
   }
 
   function reorderPngBlocks(dataUri, callback) {
-    if (typeof dataUri !== "string" || dataUri.indexOf("data:image/png") === -1) {
+    if (
+      typeof dataUri !== "string" ||
+      dataUri.indexOf("data:image/png") === -1
+    ) {
       callback(dataUri);
       return;
     }
@@ -74,7 +201,6 @@
         var imgData = ctx.getImageData(0, 0, w, h);
         var data = imgData.data;
 
-        // Check each row for non-transparent pixels
         var rowHasContent = new Uint8Array(h);
         for (var y = 0; y < h; y++) {
           var rowOffset = y * w * 4;
@@ -86,7 +212,6 @@
           }
         }
 
-        // Find contiguous block slices separated by blank rows
         var slices = [];
         var inSlice = false;
         var startY = 0;
@@ -108,8 +233,6 @@
           return;
         }
 
-        // Identify which slice contains the green 'al iniciar' container block
-        // The container header is specifically located in the top rows of its slice (first ~80px)
         var startSliceIdx = -1;
         for (var i = 0; i < slices.length; i++) {
           var s = slices[i];
@@ -123,7 +246,6 @@
               var g = data[offset + sx * 4 + 1];
               var b = data[offset + sx * 4 + 2];
               var a = data[offset + sx * 4 + 3];
-              // MakeCode green is around RGB(0..50, 140..220, 0..100)
               if (a > 200 && r < 50 && g > 140 && b < 100) {
                 headerGreenCount++;
               }
@@ -135,25 +257,22 @@
           }
         }
 
-        // If 'al iniciar' is already first (0) or not found (-1), return original
         if (startSliceIdx <= 0) {
           callback(dataUri);
           return;
         }
 
-        // Reorder: 'al iniciar' first, then the remaining slices
         var reorderedSlices = [slices[startSliceIdx]];
         for (var j = 0; j < slices.length; j++) {
           if (j !== startSliceIdx) reorderedSlices.push(slices[j]);
         }
 
-        // Calculate gap from original layout
-        var gap = slices.length > 1 ? (slices[1].y1 - slices[0].y2) : 60;
+        var gap = slices.length > 1 ? slices[1].y1 - slices[0].y2 : 60;
         if (gap < 20) gap = 48;
 
         var totalHeight = 0;
         for (var k = 0; k < reorderedSlices.length; k++) {
-          totalHeight += (reorderedSlices[k].y2 - reorderedSlices[k].y1 + 1);
+          totalHeight += reorderedSlices[k].y2 - reorderedSlices[k].y1 + 1;
           if (k > 0) totalHeight += gap;
         }
 
@@ -182,6 +301,7 @@
     img.src = dataUri;
   }
 
+  // Missatges de l'iframe dinàmic (fallback)
   window.addEventListener(
     "message",
     function (ev) {
@@ -190,11 +310,14 @@
 
       if (msg.type === "renderready") {
         iframeReady = true;
-        var pres = pendingPres.slice();
+        var pending = pendingPres.slice();
         pendingPres = [];
-        pres.forEach(function (pre, idx) {
-          renderPre(pre, idx);
-        });
+        var f = document.getElementById("makecoderenderer");
+        if (f) {
+          pending.forEach(function (item) {
+            f.contentWindow.postMessage(item.payload, targetUrl);
+          });
+        }
       } else if (msg.type === "renderblocks") {
         var id = msg.id;
         var code = document.getElementById(id);
@@ -221,14 +344,46 @@
     false
   );
 
+  function processBlock(el, idx) {
+    var rawCode = el.innerText || el.textContent;
+    var norm = normalizeCode(rawCode);
+
+    var container =
+      el.closest(".highlighter-rouge") || el.closest("pre") || el;
+
+    var staticImgUrl =
+      baseUrl + "/assets/images/blocks/" + norm.hash + ".png";
+
+    // Intentar carregar la imatge estàtica
+    var img = document.createElement("img");
+    img.className = "makecode-rendered-blocks";
+    img.alt = "Blocs de MakeCode Arcade";
+
+    // Si falla la càrrega estàtica (p. ex. bloc nou sense pre-renderitzar), fallback al renderitzat dinàmic
+    img.onerror = function () {
+      if (img.parentNode) {
+        img.parentNode.insertBefore(container, img);
+        img.parentNode.removeChild(img);
+      }
+      renderPreDynamic(el, idx, norm);
+    };
+
+    img.src = staticImgUrl;
+
+    // Substitució immediata del contenidor de codi per la imatge
+    if (container && container.parentNode) {
+      container.parentNode.insertBefore(img, container);
+      container.parentNode.removeChild(container);
+    }
+  }
+
   function init() {
     var blocks = document.querySelectorAll(
       ".language-blocks code, pre > code.language-blocks, code[class*='language-blocks']"
     );
     if (blocks.length > 0) {
-      injectRenderer();
       blocks.forEach(function (el, idx) {
-        renderPre(el, idx);
+        processBlock(el, idx);
       });
     }
   }

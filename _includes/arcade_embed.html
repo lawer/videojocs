@@ -1,0 +1,74 @@
+{% assign game_id = include.id | default: include.project_id %}
+{% assign game_title = include.title | default: "Projecte MakeCode Arcade" %}
+{% assign embed_uid = "arcade-" | append: game_id | slugify %}
+
+<div class="arcade-embed-card" id="{{ embed_uid }}">
+  <div class="arcade-embed-header">
+    <div class="arcade-embed-badge">
+      <span class="arcade-dot"></span> ARCADE
+    </div>
+    <span class="arcade-embed-title">{{ game_title }}</span>
+    <button class="arcade-embed-fs-btn" type="button" title="Pantalla completa" aria-label="Pantalla completa" onclick="toggleArcadeFullscreen('{{ embed_uid }}')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="arcade-screen-container">
+    <!-- Pantalla d'inici Click-to-Play per a càrrega instantània -->
+    <div class="arcade-splash" onclick="startArcadeGame('{{ embed_uid }}', '{{ game_id }}')">
+      <div class="arcade-splash-content">
+        <div class="arcade-play-icon">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+        </div>
+        <div class="arcade-splash-text">Fes clic per provar el joc</div>
+        <div class="arcade-splash-sub">Simulador segur en mode execució</div>
+      </div>
+    </div>
+    <div class="arcade-frame-slot"></div>
+  </div>
+
+  <div class="arcade-embed-footer">
+    <div class="arcade-controls-hint">
+      <span class="arcade-key">W A S D</span> / <span class="arcade-key">Fletxes</span>: Moviment &nbsp;|&nbsp;
+      <span class="arcade-key">Z</span> / <span class="arcade-key">Espai</span>: Botó A &nbsp;|&nbsp;
+      <span class="arcade-key">X</span>: Botó B
+    </div>
+  </div>
+</div>
+
+<script>
+if (typeof window.startArcadeGame === 'undefined') {
+  window.startArcadeGame = function(uid, id) {
+    var card = document.getElementById(uid);
+    if (!card) return;
+    var splash = card.querySelector('.arcade-splash');
+    var slot = card.querySelector('.arcade-frame-slot');
+    if (splash) splash.style.display = 'none';
+
+    if (slot && !slot.querySelector('iframe')) {
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://arcade.makecode.com/--run?id=' + encodeURIComponent(id);
+      iframe.setAttribute('allow', 'gamepad; autoplay; fullscreen');
+      iframe.setAttribute('allowfullscreen', 'true');
+      iframe.className = 'arcade-game-iframe';
+      iframe.title = 'Simulador de joc';
+      slot.appendChild(iframe);
+    }
+  };
+
+  window.toggleArcadeFullscreen = function(uid) {
+    var card = document.getElementById(uid);
+    if (!card) return;
+    if (!document.fullscreenElement) {
+      if (card.requestFullscreen) card.requestFullscreen();
+      else if (card.webkitRequestFullscreen) card.webkitRequestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+    }
+  };
+}
+</script>
